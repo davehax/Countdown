@@ -32,6 +32,10 @@ class CountDownNewPage extends Component {
         this.handleDateTimeChange = this.handleDateTimeChange.bind(this);
     }
 
+    componentDidMount() {
+        document.title = "Create new Count Down";
+    }
+
     handleChange(e) {
         // e.persist(); // persist synthetic event. Uncomment if error is thrown on change
         this.setState({

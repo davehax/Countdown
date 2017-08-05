@@ -50,12 +50,13 @@ class CountDownDisplayPage extends Component {
                 }
             }
 
-            // Set an interval for updating our state
-
+            // Set document title
+            document.title = `Countdown to ${newState.eventName}`;
+            
             this.setState({
                 item: newState,
                 eventDateTimeDisplay: new moment(newState.eventDateTime).format("MMMM Do, YYYY, h:mm a"),
-                // differenceIn: this.calculateDateTimeDifference(newState.eventDateTime),
+                // Set an interval for updating our state
                 intervalId: window.setInterval(this.calculateDateTimeDifference, 1000)
             });
         });
