@@ -5,6 +5,9 @@ import 'react-datetime/css/react-datetime.css';
 import firebase from './firebase.js';
 import DBUtil from './DBUtil.js';
 import PageBackground, { PageBackgroundOverlay } from './PageBackground.js';
+import UnsplashCredit from './UnsplashCredit.js';
+import { UnsplashSearchButton } from './UnsplashSearchModal.js';
+import Unsplash from 'unsplash-js';
 import Moment from 'moment';
 require('moment/locale/en-au');
 
@@ -13,6 +16,13 @@ const today = new Date();
 const dateTimeIsValid = (current) => {
     return current.isAfter(today);
 }
+ 
+// Unsplash initialisation
+const unsplash = new Unsplash({
+    applicationId: "79cb373f58703c6c2f82ee7b0681289d556028a88aca21473eaeb2221d8b9f50",
+    secret: "6cfa6e7516c6f3664eaf8671b27c6c74f54032f36af2c14d47a47c181b470a75",
+    callbackUrl: "https://countin-down.herokuapp.com/"
+});
 
 // Countdown new form page - submits data to FireBase db
 class CountDownNewPage extends Component {
@@ -115,10 +125,13 @@ class CountDownNewPage extends Component {
                                 <DateTime inputProps={{ name: "eventDateTime", readOnly: "readonly", className:"form--input" }} isValidDate={dateTimeIsValid} onChange={this.handleDateTimeChange} />
                             </label>
                             <br />
+                            <UnsplashSearchButton />
+                            <br/>
                             <button className="form--button" onClick={this.handleSubmit} disabled={!this.state.eventDateTimeValid}>Create!</button>
                         </form>
                     </div>
                 </div>
+                <UnsplashCredit bar={true} />
             </div>
         )
     }

@@ -4,14 +4,12 @@ import Moment from 'moment';
 
 class CountDownCard extends Component {
     render() {
-        // let t = new moment(this.props.item.eventDateTime).format();
+        let displayEventDateTime = new Moment(this.props.item.eventDateTime).format("MMMM Do, YYYY, h:mm a");
         return (
-            <div className="countdown--card">
-                <Link to={'/' + this.props.item.url}>
-                    <h1>{this.props.item.eventName}</h1>
-                    <h3>{this.props.item.eventDateTime}</h3>
-                </Link>
-            </div>
+            <Link className="countdown--card" to={'/' + this.props.item.url}>
+                <h2>{this.props.item.eventName}</h2>
+                <p>{displayEventDateTime}</p>
+            </Link>
         )
     }
 }

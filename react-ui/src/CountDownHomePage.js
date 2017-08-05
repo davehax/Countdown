@@ -4,6 +4,8 @@ import firebase from './firebase.js';
 import DBUtil from './DBUtil.js';
 import CountDownCard from './CountDownCard.js';
 import PageBackground, { PageBackgroundOverlay } from './PageBackground.js';
+import NewCountDownLink from './NewLink.js';
+import UnsplashCredit from './UnsplashCredit.js';
 
 class CountDownHomePage extends Component {
     constructor(props) {
@@ -56,12 +58,13 @@ class CountDownHomePage extends Component {
                 <div className="page--content">
                     <div className="page--content-scroll">
                         <h1>Home Page</h1>
-                        <Link to="/new">Create new item</Link>
+                        <NewCountDownLink />
                         {this.state.items.length > 0 && (
                             this.state.items.map((item) => <CountDownCard item={item} key={item.id} />)
                         )}
                     </div>
                 </div>
+                <UnsplashCredit bar={true} />
             </div>
         )
     }

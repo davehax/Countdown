@@ -17,7 +17,7 @@ h1, h2, h3, h4, h5, h6 {
 
 /* Global app styles  */
 .app, .form--input, .form--button {
-    font-family: 'Archivo Black', sans-serif;
+    /* font-family: 'Archivo Black', sans-serif; */
     font-family: 'Nixie One', cursive; 
     /* font-family: 'Rosario', sans-serif; */
     text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.2);
@@ -43,6 +43,8 @@ h1, h2, h3, h4, h5, h6 {
     top: 0;
     width: 100%;
     height: 100%;
+
+    transition: opacity 0.3s ease-in;
 }
 
 .page--background {
@@ -58,9 +60,29 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .page--content-scroll {
-    /* overflow: auto; */
-    max-width: 800px;
-    margin: 120px auto;
+    margin: 60px 35px;
+}
+
+/* Unsplash credit bar  */
+.unsplash-credit.unsplash-credit-bar {
+    position: fixed;
+    bottom: 0px;
+    left: 0px;
+    right: 0px;
+    z-index: 15;
+
+    padding: 10px 20px;
+
+    font-size: 0.6em;
+    text-align: center;
+
+    background-color: rgba(0, 0, 0, 0.2);
+}
+
+/* Display card  */
+.countdown--card {
+    display: block;
+    margin: 1.75em 0;
 }
 
 /* Form Components  */
@@ -94,4 +116,12 @@ h1, h2, h3, h4, h5, h6 {
     text-shadow: none;
     border-radius: 3px;
     box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.45);
+    margin-bottom: 2em;
+}
+
+@media all and (min-width: 320px) {
+    .page--content-scroll {
+        max-width: 400px;
+        margin: 120px auto;
+    }
 }

@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
 import { Link, Redirect } from 'react-router-dom';
 import PageBackground, { PageBackgroundOverlay } from './PageBackground.js';
+import NewCountDownLink from './NewLink.js';
 import Loading from './Loading.js';
+import UnsplashCredit from './UnsplashCredit.js';
 import firebase from './firebase.js';
 import DBUtil from './DBUtil.js';
-// let moment = require('moment');
 import Moment from 'moment';
 import { extendMoment } from 'moment-range';
 const moment = extendMoment(Moment);
@@ -23,7 +24,9 @@ class CountDownDisplayPage extends Component {
             item: null,
             intervalId: -1,
             eventDateTimeDisplay: '',
-            differenceIn: null
+            differenceIn: null,
+            redirect: false,
+            redirectUrl: ''
         };
 
         this.calculateDateTimeDifference = this.calculateDateTimeDifference.bind(this);
@@ -37,33 +40,47 @@ class CountDownDisplayPage extends Component {
         ref.orderByChild('url').equalTo(this.props.match.params.id).once('value', (snapshot) => {
             // Get the value of the snapshot and construct a collapsed object for use by our component
             let items = snapshot.val();
-            let newState = {};
 
-            // We use a for statement, but we know we will only retrieve once value from the DB
-            for (let item in items) {
-                // therefore we will simply construct a single object instead of an array of objects
-                newState = {
-                    id: item,
-                    eventName: items[item].eventName,
-                    eventDateTime: items[item].eventDateTime,
-                    url: items[item].url
+            // if null, the item doesn't exist therefore we must re-route to /404
+            if (items !== null) {
+                let newState = {};
+
+                // We use a for statement, but we know we will only retrieve once value from the DB
+                for (let item in items) {
+                    // therefore we will simply construct a single object instead of an array of objects
+                    newState = {
+                        id: item,
+                        eventName: items[item].eventName,
+                        eventDateTime: items[item].eventDateTime,
+                        url: items[item].url
+                    }
                 }
-            }
 
-            // Set document title
-            document.title = `Countdown to ${newState.eventName}`;
-            
-            this.setState({
-                item: newState,
-                eventDateTimeDisplay: new moment(newState.eventDateTime).format("MMMM Do, YYYY, h:mm a"),
-                // Set an interval for updating our state
-                intervalId: window.setInterval(this.calculateDateTimeDifference, 1000)
-            });
+                // Set document title
+                document.title = `Countdown to ${newState.eventName}`;
+                
+                this.setState({
+                    item: newState,
+                    eventDateTimeDisplay: new moment(newState.eventDateTime).format("MMMM Do, YYYY, h:mm a"),
+                    // Set an interval for updating our state
+                    intervalId: window.setInterval(this.calculateDateTimeDifference, 1000)
+                });
+
+            }
+            else {
+                this.setState({
+                    redirect: true,
+                    redirectUrl: '/404'
+                });
+            }
         });
     }
 
     componentWillUnmount() {
         // clear the interval
+        if (this.state.intervalId !== -1) {
+            window.clearInterval(this.state.intervalId);
+        }
     }
 
     calculateDateTimeDifference(eventDateTime) {
@@ -114,6 +131,10 @@ class CountDownDisplayPage extends Component {
     }
 
     render() {
+        if (this.state.redirect === true) {
+            return <Redirect to={this.state.redirectUrl} />;
+        }
+
         return (
             <div className="page">
                 <PageBackground />
@@ -138,11 +159,12 @@ class CountDownDisplayPage extends Component {
                                 <p>{`${this.state.differenceIn.hours} ${this.state.differenceIn.hoursString}`}</p>
                                 <p>{`${this.state.differenceIn.minutes} ${this.state.differenceIn.minutesString}`}</p>
                                 <p>{`${this.state.differenceIn.seconds} ${this.state.differenceIn.secondsString}`}</p>
-                                <Link to="/new">Add new item</Link>
+                                <NewCountDownLink />
                             </div>
                         )}
                     </div>
                 </div>
+                <UnsplashCredit bar={true} />
             </div>
         )
     }
