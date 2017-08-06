@@ -52,6 +52,7 @@ class CountDownDisplayPage extends Component {
                         id: item,
                         eventName: items[item].eventName,
                         eventDateTime: items[item].eventDateTime,
+                        eventImage: items[item].eventImage,
                         url: items[item].url
                     }
                 }
@@ -137,7 +138,14 @@ class CountDownDisplayPage extends Component {
 
         return (
             <div className="page">
-                <PageBackground />
+                {this.state.item !== null && this.state.item.eventImage && (
+                    <PageBackground src={this.state.item.eventImage.urls.full} />
+                )}
+                
+                {this.state.item !== null && !this.state.item.eventImage && (
+                    <PageBackground />
+                )}
+
                 <PageBackgroundOverlay />
                 <div className="page--content">
                     <div className="page--content-scroll">
@@ -164,7 +172,12 @@ class CountDownDisplayPage extends Component {
                         )}
                     </div>
                 </div>
-                <UnsplashCredit bar={true} />
+                
+                {this.state.item !== null && this.state.item.eventImage ? (
+                    <UnsplashCredit bar={true} item={this.state.item.eventImage} />
+                ) : (
+                    <UnsplashCredit bar={true} />
+                )}
             </div>
         )
     }

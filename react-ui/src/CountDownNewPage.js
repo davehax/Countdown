@@ -7,7 +7,6 @@ import DBUtil from './DBUtil.js';
 import PageBackground, { PageBackgroundOverlay } from './PageBackground.js';
 import UnsplashCredit from './UnsplashCredit.js';
 import { UnsplashSearchButton } from './UnsplashSearchModal.js';
-import Unsplash from 'unsplash-js';
 import Moment from 'moment';
 require('moment/locale/en-au');
 
@@ -17,12 +16,7 @@ const dateTimeIsValid = (current) => {
     return current.isAfter(today);
 }
  
-// Unsplash initialisation
-const unsplash = new Unsplash({
-    applicationId: "79cb373f58703c6c2f82ee7b0681289d556028a88aca21473eaeb2221d8b9f50",
-    secret: "6cfa6e7516c6f3664eaf8671b27c6c74f54032f36af2c14d47a47c181b470a75",
-    callbackUrl: "https://countin-down.herokuapp.com/"
-});
+
 
 // Countdown new form page - submits data to FireBase db
 class CountDownNewPage extends Component {
@@ -34,12 +28,14 @@ class CountDownNewPage extends Component {
             eventDateTimeValid: false,
             eventDateTime: '',
             eventCreated: false,
+            eventImage: null,
             redirectUrl: ''
         }
 
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
         this.handleDateTimeChange = this.handleDateTimeChange.bind(this);
+        this.handleImageChange = this.handleImageChange.bind(this);
     }
 
     componentDidMount() {
@@ -69,6 +65,24 @@ class CountDownNewPage extends Component {
         }
     }
 
+    handleImageChange(item) {
+        let partialItem = {
+            id: item.id,
+            color: item.color,
+            links: {
+                html: item.links.html
+            },
+            urls: item.urls,
+            user: {
+                name: item.user.name
+            }
+        }
+
+        this.setState({
+            eventImage: partialItem
+        })
+    }
+
     handleSubmit(e) {
         e && e.preventDefault();
 
@@ -82,7 +96,8 @@ class CountDownNewPage extends Component {
             update['/' + DBUtil.itemsKey + '/' + key] = {
                 url: url,
                 eventName: this.state.eventName,
-                eventDateTime: this.state.eventDateTime
+                eventDateTime: this.state.eventDateTime,
+                eventImage: this.state.eventImage
             };
             // Push our data to FireBase
             let updatePromise = firebase.database().ref().update(update);
@@ -109,7 +124,11 @@ class CountDownNewPage extends Component {
 
         return (
             <div className="page">
-                <PageBackground />
+                {this.state.eventImage === null ? (
+                    <PageBackground />
+                ) : (
+                    <PageBackground src={this.state.eventImage.urls.full} />
+                )}
                 <PageBackgroundOverlay />
                 <div className="page--content">
                     <div className="page--content-scroll">
@@ -125,13 +144,17 @@ class CountDownNewPage extends Component {
                                 <DateTime inputProps={{ name: "eventDateTime", readOnly: "readonly", className:"form--input" }} isValidDate={dateTimeIsValid} onChange={this.handleDateTimeChange} />
                             </label>
                             <br />
-                            <UnsplashSearchButton />
+                            <UnsplashSearchButton onSelect={this.handleImageChange} />
                             <br/>
                             <button className="form--button" onClick={this.handleSubmit} disabled={!this.state.eventDateTimeValid}>Create!</button>
                         </form>
                     </div>
                 </div>
-                <UnsplashCredit bar={true} />
+                {this.state.eventImage === null ? (
+                    <UnsplashCredit bar={true} />
+                ) : (
+                    <UnsplashCredit bar={true} item={this.state.eventImage} />
+                )}
             </div>
         )
     }

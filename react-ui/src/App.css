@@ -6,7 +6,7 @@ html, body {
     overflow: hidden;
 }
 
-html, body, .form--input, .form--button {
+html, body, .form--input, .form--button, input, textarea, button {
     font-size: 24px;
 }
 
@@ -22,6 +22,12 @@ h1, h2, h3, h4, h5, h6 {
     /* font-family: 'Rosario', sans-serif; */
     text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.2);
 }
+
+* {
+    font-family: 'Nixie One', cursive; 
+}
+
+button, input[type="button"] { cursor: pointer; }
 
 .app, .app a, .app a:link, .app a:hover, .app a:visited {
     color: #fff;
@@ -64,7 +70,11 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 /* Unsplash credit bar  */
-.unsplash-credit.unsplash-credit-bar {
+.unsplash-credit {
+    text-align: center;
+}
+
+.unsplash-credit.unsplash-credit--bar {
     position: fixed;
     bottom: 0px;
     left: 0px;
@@ -78,6 +88,188 @@ h1, h2, h3, h4, h5, h6 {
 
     background-color: rgba(0, 0, 0, 0.2);
 }
+
+.unsplash-credit--small {
+    font-size: 12px;
+}
+
+/* .unsplash-credit--item {
+
+} */
+
+/* Unsplash search modal  */
+.us-modal--container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+
+    background-color: rgba(0, 0, 0, 0.85);
+    overflow: auto;
+}
+
+.us-modal {
+    max-width: 600px;
+    margin: 120px auto;
+    color: #222;
+    text-shadow: none;
+    background-color: #fff;
+    border-radius: 2px;
+    background-color: #E1F5FE;
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.65);
+    overflow: hidden;
+}
+
+.us-modal a,
+.us-modal a:link,
+.us-modal a:hover,
+.us-modal a:visited {
+    color: #000;
+}
+
+.us-modal--content {
+    position: relative;
+}
+
+.us-modal--title,
+.us-modal--search,
+.us-modal--results,
+.us-modal--credit,
+.us-modal--close {
+    margin: 0;
+    padding: 8px 16px;
+}
+
+.us-modal--title,
+.us-modal--close {
+    font-size: 24px;
+    color: #fff;
+}
+
+.us-modal--title {
+    color: #fff;
+    background-color: #03A9F4;
+    border-bottom: 1px solid #0288D1;
+    position: relative;
+}
+
+/* .us-modal--credit {
+    color: #888;
+    font-size: 16px;
+} */
+
+/* modal close button  */
+.us-modal--close {
+    position: absolute;
+    top: 0px;
+    right: 0px;
+    bottom: 0px;
+    line-height: 1;
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+}
+
+.us-modal--close:hover { background-color: #0288D1; }
+.us-modal--close:active { background-color: #01579B; }
+
+/* modal search  */
+.us-modal--search {
+    background-color: #B3E5FC;
+}
+
+.us-modal--search--input,
+.us-modal--search--button {
+    box-sizing: border-box;
+    padding: 8px 16px;
+    border: none;
+
+    font-size: 16px;
+}
+
+.us-modal--search--input {
+    width: 80%;
+}
+
+.us-modal--search--button {
+    width: 20%;
+    background-color: #03A9F4;
+    color: #fff;
+}
+
+.us-modal--search--button:hover { background-color: #0288D1; }
+.us-modal--search--button:active { background-color: #01579B; }
+
+/* modal search result items */
+.us-modal--results {
+    max-height: 50vh;
+    overflow: auto;
+}
+
+.us-result--item {
+    vertical-align: top;
+    display: inline-block;
+    box-sizing: border-box;
+    width: 30.333%;
+    margin: 30px 1.5% 30px 1.5%;
+    padding: 10px 10px;
+    overflow: hidden;
+    cursor: pointer;
+}
+
+.us-result--item--viewport {
+    position: relative;
+    overflow: hidden;
+    height: 120px;
+    margin: 0 0 10px 0;
+}
+
+.us-result--item img {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display: block;
+    margin: 0 auto;
+    height: 120px;
+}
+
+.us-result--item--selected {
+    border-radius: 2px;
+    background-color: #B3E5FC;
+    box-shadow: 0px 0px 0px 2px #01579B;
+}
+
+/* Modal select bar at the bottom  */
+.us-modal--select {
+    display: flex;
+    align-items: flex-end;
+    border-top: 1px solid #607D8B;
+}
+
+.us-modal--select, .us-modal--select--button {
+    background-color: #B0BEC5;
+}
+
+.us-modal--select.us-modal--select--enabled {
+    border-top: 1px solid #689F38;
+    background-color: #C5E1A5;
+}
+
+.us-modal--select--button {
+    display: inline-block;
+    padding: 8px 16px;
+    margin-left: auto;
+    border: none;
+}
+
+.us-modal--select.us-modal--select--enabled .us-modal--select--button {
+    background-color: #8BC34A;
+}
+
+.us-modal--select.us-modal--select--enabled .us-modal--select--button:hover { background-color: #689F38; color: #fff; }
+.us-modal--select.us-modal--select--enabled .us-modal--select--button:active { background-color: #33691E; color: #fff; }
 
 /* Display card  */
 .countdown--card {

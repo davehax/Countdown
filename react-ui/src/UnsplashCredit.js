@@ -1,32 +1,51 @@
-import React, { Component } from 'react';
-import shallowequal from 'shallowequal';
+import React from 'react';
+import { unsplashUTM } from './Unsplash.js';
 
-class UnsplashCredit extends Component {
-    constructor(props) {
-        super(props);
-
-        let className = ['unsplash-credit'];
-        if (this.props.bar === true) {
-            className.push('unsplash-credit-bar');
-        }
-
-        this.state = {
-            className: className
-        }
+// ({ bar, item }) => { ... }
+// Declares 'bar' and 'item' variables like so
+// (props) => { let bar = props.bar; let item = props.item; }
+// So the shorthand is a little confusing, but useful
+const UnsplashCredit = ({ bar, small, item }) => {
+    let className = ['unsplash-credit'];
+    if (bar === true) {
+        className.push('unsplash-credit--bar');
     }
 
-    // Compare props and state with new props and new state -- if there's no diff then we don't need to render!
-    shouldComponentUpdate(nextProps, nextState) {
-        return !shallowequal(nextProps, this.props) || !shallowequal(nextState, this.state);
+    if (small === true) {
+        className.push('unsplash-credit--small');
     }
 
-    render() {
-        return (
-            <div className={this.state.className.join(' ')}>
-                <span>Images provided by <a href="">Unsplash</a></span>
-            </div>
-        )
+    if (item) {
+        className.push('unsplash-credit--item');
     }
+
+    return (
+        <div className={className.join(' ')}>
+            {typeof(item) !== 'undefined' ? (
+                <span><a href={`${item.links.html}${unsplashUTM}`}>{item.user.name}</a> | <a href="https://unsplash.com/">Unsplash</a></span>
+            ) : (
+                <span>Images provided by <a href="https://unsplash.com/">Unsplash</a></span>
+            )}
+            
+        </div>
+    )
+}
+
+const UnsplashCreditAuthor = ({ item, small }) => {
+    let className = ['unsplash-credit'];
+
+    if (small === true) {
+        className.push('unsplash-credit--small');
+    }
+
+    return (
+        <div className={className.join(' ')}>
+            <span><a href={`${item.links.html}${unsplashUTM}`}>{item.user.name}</a></span>
+        </div>
+    )
 }
 
 export default UnsplashCredit;
+export {
+    UnsplashCreditAuthor
+}
