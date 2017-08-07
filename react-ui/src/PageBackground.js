@@ -38,8 +38,9 @@ const scaleDimensionsToCoverScreen = (width, height) => {
         scaledWidth = targetHeight * imgRatio;
         
     }
+    // If the screen is *less* portrait than the image
+    // we must take targetWidth and calculate the scaledHeight
     else {
-        // scaledHeight = imgRatio < 1 ? targetWidth/imgRatio : targetWidth*imgRatio;
         scaledWidth = targetWidth;
         scaledHeight = targetWidth / imgRatio;
     }
@@ -157,7 +158,7 @@ class PageBackground extends Component {
                     }
                     this.setState(newState);
                 }.bind(this), 100);
-                
+
             }.bind(this), 300);
 
         }.bind(this);
