@@ -1,5 +1,3 @@
-import firebase from './firebase.js';
-
 const DBUtil = {
     // Returns a promise that resolves with the unique id to redirect to
     itemsKey: 'countdownItems',

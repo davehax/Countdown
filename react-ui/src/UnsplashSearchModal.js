@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import UnsplashCredit, { UnsplashCreditAuthor } from './UnsplashCredit.js';
+import { UnsplashCreditAuthor } from './UnsplashCredit.js';
 import unsplash from './Unsplash.js'; // already initialised with our app id and secret
 import { toJson } from 'unsplash-js';
 import Loading from './Loading.js';
@@ -212,7 +212,7 @@ const UnsplashSearchResult = ({ item, onClick, selected }) => {
     return (
         <div className={className.join(' ')} onClick={_onClick}>
             <div className="us-result--item--viewport">
-                <img src={item.urls.thumb} />
+                <img alt={item.user.name} src={item.urls.thumb} />
             </div>
             <UnsplashCreditAuthor item={item} small={true} />
         </div>

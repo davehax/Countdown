@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Link, Redirect } from 'react-router-dom';
+import { Redirect } from 'react-router-dom';
 import DateTime from 'react-datetime';
 import 'react-datetime/css/react-datetime.css';
 import firebase from './firebase.js';

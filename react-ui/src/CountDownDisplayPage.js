@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Link, Redirect } from 'react-router-dom';
+import { Redirect } from 'react-router-dom';
 import PageBackground, { PageBackgroundOverlay } from './PageBackground.js';
 import NewCountDownLink from './NewLink.js';
 import Loading from './Loading.js';
@@ -10,6 +10,7 @@ import Moment from 'moment';
 import { extendMoment } from 'moment-range';
 const moment = extendMoment(Moment);
 
+// Quick Pad - 5 --> 05
 const quickPad = (n) => {
     n = '' + n;
     return n.length >= 2 ? n : '0'+n;

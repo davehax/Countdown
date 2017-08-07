@@ -1,7 +1,5 @@
 import React, { Component } from 'react';
 import shallowequal from 'shallowequal';
-// import ImagesLoaded from 'react-images-loaded';
-import ImagesLoaded from './ImagesLoaded.js';
 
 const searchTerms = [
     'nature,water',
@@ -174,10 +172,9 @@ class PageBackground extends Component {
     }
 
     render() {
-        // backgroundImage: `url(${this.state.src})`, 
         return (
             <div className="page--background" style={{ backgroundColor: this.state.backgroundColor }}>
-                <img src={this.state.src} style={{ 
+                <img src={this.state.src} alt="Background" style={{ 
                     opacity: this.state.opacity,
                     width: `${this.state.width}px`,
                     height: `${this.state.height}px`

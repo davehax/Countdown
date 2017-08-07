@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { Link, Redirect } from 'react-router-dom';
 import firebase from './firebase.js';
 import DBUtil from './DBUtil.js';
 import CountDownCard from './CountDownCard.js';
