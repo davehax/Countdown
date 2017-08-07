@@ -42,20 +42,29 @@ button, input[type="button"] { cursor: pointer; }
 }
 
 .page--background,
-.page--background--overlay {
+.page--background--overlay,
+.page--background img {
     position: absolute;
     z-index: 1;
     left: 0;
     top: 0;
     width: 100%;
     height: 100%;
-
-    transition: opacity 0.3s ease-in;
 }
 
 .page--background {
     background-size: 100%;
     background-size: cover;
+    transition: background-color 0.3s ease-in;
+}
+
+.page--background img {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+
+    transition: opacity 0.3s ease-in;
 }
 
 .page--content {
@@ -66,7 +75,7 @@ button, input[type="button"] { cursor: pointer; }
 }
 
 .page--content-scroll {
-    margin: 60px 35px;
+    margin: 20px 35px 100px 35px;
 }
 
 /* Unsplash credit bar  */
@@ -308,12 +317,12 @@ button, input[type="button"] { cursor: pointer; }
     text-shadow: none;
     border-radius: 3px;
     box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.45);
-    margin-bottom: 2em;
+    margin-bottom: 100px;
 }
 
 @media all and (min-width: 320px) {
     .page--content-scroll {
         max-width: 400px;
-        margin: 120px auto;
+        margin: 40px auto 100px auto;
     }
 }

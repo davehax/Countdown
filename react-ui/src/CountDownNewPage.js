@@ -65,7 +65,9 @@ class CountDownNewPage extends Component {
         }
     }
 
+    // When the selected image changes
     handleImageChange(item) {
+        // Create a partial object be extracting only the properties we need
         let partialItem = {
             id: item.id,
             color: item.color,
@@ -78,6 +80,7 @@ class CountDownNewPage extends Component {
             }
         }
 
+        // Update the state with our new image object
         this.setState({
             eventImage: partialItem
         })
@@ -127,7 +130,7 @@ class CountDownNewPage extends Component {
                 {this.state.eventImage === null ? (
                     <PageBackground />
                 ) : (
-                    <PageBackground src={this.state.eventImage.urls.full} />
+                    <PageBackground src={this.state.eventImage.urls.regular} backgroundColor={this.state.eventImage.color} />
                 )}
                 <PageBackgroundOverlay />
                 <div className="page--content">
@@ -144,6 +147,7 @@ class CountDownNewPage extends Component {
                                 <DateTime inputProps={{ name: "eventDateTime", readOnly: "readonly", className:"form--input" }} isValidDate={dateTimeIsValid} onChange={this.handleDateTimeChange} />
                             </label>
                             <br />
+                            <span className="form--label">Select background image (optional):</span>
                             <UnsplashSearchButton onSelect={this.handleImageChange} />
                             <br/>
                             <button className="form--button" onClick={this.handleSubmit} disabled={!this.state.eventDateTimeValid}>Create!</button>

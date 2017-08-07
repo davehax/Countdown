@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import shallowequal from 'shallowequal';
+// import ImagesLoaded from 'react-images-loaded';
+import ImagesLoaded from './ImagesLoaded.js';
 
 const searchTerms = [
     'nature,water',
@@ -18,6 +20,36 @@ const getRandomSearchTerm = () => {
     return searchTerms[Math.round(Math.random() * (searchTerms.length - 1))];
 }
 
+// Scale width and height dimensions to cover the screen
+const scaleDimensionsToCoverScreen = (width, height) => {
+    let targetWidth = window.innerWidth;
+    let targetHeight = window.innerHeight;
+
+    let scaledWidth = width;
+    let scaledHeight = height;
+
+    let screenRatio = window.innerWidth / window.innerHeight;
+    let imgRatio = width / height;
+
+    // If the screen is *more* portrait than the image
+    // we must take targetHeight and calculate the scaledWidth
+    if (screenRatio < imgRatio) {
+        scaledHeight = targetHeight;
+        scaledWidth = targetHeight * imgRatio;
+        
+    }
+    else {
+        // scaledHeight = imgRatio < 1 ? targetWidth/imgRatio : targetWidth*imgRatio;
+        scaledWidth = targetWidth;
+        scaledHeight = targetWidth / imgRatio;
+    }
+
+    return {
+        width: scaledWidth,
+        height: scaledHeight
+    }
+}
+
 // Background image component
 class PageBackground extends Component {
     constructor(props) {
@@ -25,29 +57,21 @@ class PageBackground extends Component {
 
         this.state = {
             src: this.props.src ? this.props.src : `https://source.unsplash.com/1920x1200/?${getRandomSearchTerm()}`,
-            imgLoaded: false,
-            // imgLoading: true,
-            opacity: 0
+            backgroundColor: '#000',
+            opacity: 0,
+            width: 0,
+            height: 0,
+            oWidth: 0,
+            oHeight: 0
         };
 
         this.waitForImageToLoad = this.waitForImageToLoad.bind(this);
+        this.handleWindowResize = this.handleWindowResize.bind(this);
     }
 
     componentDidMount() {
         this.waitForImageToLoad();
-    }
-
-    waitForImageToLoad(src) {
-        let img = new Image();
-
-        img.onload = function() {
-            this.setState({
-                imgLoaded: true,
-                opacity: 1
-            });
-        }.bind(this);
-        
-        img.src = src;
+        window.addEventListener('resize', this.handleWindowResize);
     }
 
     // Compare props and state with new props and new state -- if there's no diff then we don't need to render!
@@ -59,46 +83,118 @@ class PageBackground extends Component {
     componentWillReceiveProps(nextProps) {
         if (!shallowequal(nextProps, this.props)) {
             if (nextProps.src !== this.props.src) {
-                // time to party
+                // time to party - reset opacity to 0
                 this.setState({
-                    src: nextProps.src,
-                    imgLoaded: false,
-                    // imgLoading: false,
                     opacity: 0
                 });
 
+                // call waitForImageToLoad manually, and pass in the next src
                 this.waitForImageToLoad(nextProps.src);
+            }
+
+            if (nextProps.backgroundColor !== this.props.backgroundColor) {
+                this.setState({
+                    backgroundColor: nextProps.backgroundColor
+                });
             }
         }
     }
 
+    // When the component is about to be unmounted
+    componentWillUnmount() {
+        window.removeEventListener('resize', this.handleWindowResize);
+    }
+
+    // Handle window resize
+    handleWindowResize() {
+        if (this.state.oWidth !== 0 && this.state.oHeight !== 0) {
+            let imgDimensions = scaleDimensionsToCoverScreen(this.state.oWidth, this.state.oHeight);
+            this.setState({
+                width: imgDimensions.width,
+                height: imgDimensions.height
+            });
+        }
+    }
+
+    // Enable smooth transition to the next image
+    // Create a new Image object and wait for it to load before triggering a state change
+    waitForImageToLoad(src) {
+        let srcPassedIn = !!src; // force true/false value
+        // if we're not passed a parameter, default to state
+        src = src || this.state.src;
+
+        // Create an image object
+        let img = new Image();
+
+        // Wait for the onload callback to be fired
+        // We use the full function() {} syntax here to enable inline .bind(this)
+        img.onload = function(e) {
+            // Calculate new width and height based on viewport
+            let imgDimensions = scaleDimensionsToCoverScreen(e.target.width, e.target.height);
+            let oDimensions = {
+                width: e.target.width,
+                height: e.target.height
+            }
+
+            // Basically a cheat for waiting for the opacity:0 animation to end
+            // A better way to do this would to be binding on the animation end event
+            window.setTimeout(function() {
+                // Set the new dimensions for the image
+                this.setState({
+                    width: imgDimensions.width,
+                    height: imgDimensions.height,
+                    oWidth: oDimensions.width,
+                    oHeight: oDimensions.height
+                });
+
+
+                window.setTimeout(function() {
+                    let newState = {
+                        opacity: 1
+                    }
+                    if (srcPassedIn) {
+                        newState.src = src
+                    }
+                    this.setState(newState);
+                }.bind(this), 100);
+                
+            }.bind(this), 300);
+
+        }.bind(this);
+
+        // Ensure opacity is 0...
+        this.setState({
+            opacity: 0
+        });
+        
+        // Finally, set the image src
+        img.src = ''; // just to be safe, this is the old school way of forcing onLoad to be called again
+        img.src = src;
+    }
+
     render() {
+        // backgroundImage: `url(${this.state.src})`, 
         return (
-            <div className="page--background" style={{
-                backgroundImage: `url(${this.state.src})`,
-                opacity: this.state.opacity
-            }} />
+            <div className="page--background" style={{ backgroundColor: this.state.backgroundColor }}>
+                <img src={this.state.src} style={{ 
+                    opacity: this.state.opacity,
+                    width: `${this.state.width}px`,
+                    height: `${this.state.height}px`
+                }} />
+            </div>
         )
     }
 }
 
 // Background image overlay component - used to reduce the vividness of the background
-class PageBackgroundOverlay extends Component {
-    constructor(props) {
-        super(props);
-
-        this.state = {
-            backgroundColor: this.props.backgroundColor || 'rgba(0, 0, 0, 0.35)'
-        };
-    }
-
-    render() {
-        return (
-            <div className="page--background--overlay" style={{
-                backgroundColor: this.state.backgroundColor
-            }} />
-        )
-    }
+const PageBackgroundOverlay = ({ backgroundColor }) => {
+    backgroundColor = backgroundColor || 'rgba(0, 0, 0, 0.35)';
+    
+    return (
+        <div className="page--background--overlay" style={{
+            backgroundColor: backgroundColor
+        }} />
+    )
 }
 
 export default PageBackground;

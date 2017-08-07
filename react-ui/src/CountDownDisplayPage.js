@@ -139,7 +139,7 @@ class CountDownDisplayPage extends Component {
         return (
             <div className="page">
                 {this.state.item !== null && this.state.item.eventImage && (
-                    <PageBackground src={this.state.item.eventImage.urls.full} />
+                    <PageBackground src={this.state.item.eventImage.urls.regular} backgroundColor={this.state.item.eventImage.color} />
                 )}
                 
                 {this.state.item !== null && !this.state.item.eventImage && (
@@ -153,17 +153,23 @@ class CountDownDisplayPage extends Component {
                             <Loading />
                         ) : (
                             <div>
+                                {/* Event Title  */}
                                 <h1>{this.state.item.eventName}</h1>
+                                {/* Event Date and Time, human readable display  */}
                                 <p>{this.state.eventDateTimeDisplay}</p>
+                                {/* Display years if not 0  */}
                                 {this.state.differenceIn.years > 0 && (
                                     <p>{`${this.state.differenceIn.years} ${this.state.differenceIn.yearsString}`}</p>
                                 )}
+                                {/* Display months if not 0  */}
                                 {this.state.differenceIn.months > 0 && (
                                     <p>{`${this.state.differenceIn.months} ${this.state.differenceIn.monthsString}`}</p>
                                 )}
+                                {/* Display days if not 0  */}
                                 {this.state.differenceIn.days > 0 && (
                                     <p>{`${this.state.differenceIn.days} ${this.state.differenceIn.daysString}`}</p>
                                 )}
+                                {/* Always display hours, minutes and seconds  */}
                                 <p>{`${this.state.differenceIn.hours} ${this.state.differenceIn.hoursString}`}</p>
                                 <p>{`${this.state.differenceIn.minutes} ${this.state.differenceIn.minutesString}`}</p>
                                 <p>{`${this.state.differenceIn.seconds} ${this.state.differenceIn.secondsString}`}</p>

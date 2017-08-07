@@ -11,7 +11,8 @@ class UnsplashSearchButton extends Component {
 
         this.state = {
             showModal: false,
-            selectedItem: null
+            selectedItem: null,
+            displayText: 'Select from Unsplash'
         }
 
         this.showModal = this.showModal.bind(this);
@@ -21,8 +22,9 @@ class UnsplashSearchButton extends Component {
 
     onSelect(item) {
         this.setState({
+            showModal: false,
             selectedItem: item,
-            showModal: false
+            displayText: 'Change'
         });
 
         // pass selected item up to parent
@@ -48,7 +50,7 @@ class UnsplashSearchButton extends Component {
     render() {
         return (
             <div className="us-button">
-                <button onClick={this.showModal}>Select from Unsplash</button>
+                <button onClick={this.showModal}>{this.state.displayText}</button>
                 <UnsplashSearchModal visible={this.state.showModal} onSelect={this.onSelect} onClose={this.onClose} />
             </div>
         )
