@@ -10,12 +10,6 @@ import Moment from 'moment';
 import { extendMoment } from 'moment-range';
 const moment = extendMoment(Moment);
 
-// Quick Pad - 5 --> 05
-const quickPad = (n) => {
-    n = '' + n;
-    return n.length >= 2 ? n : '0'+n;
-}
-
 // Countdown display page - retrieves data from FireBase db
 class CountDownDisplayPage extends Component {
     constructor(props) {

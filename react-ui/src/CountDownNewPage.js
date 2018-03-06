@@ -7,7 +7,6 @@ import DBUtil from './DBUtil.js';
 import PageBackground, { PageBackgroundOverlay } from './PageBackground.js';
 import UnsplashCredit from './UnsplashCredit.js';
 import { UnsplashSearchButton } from './UnsplashSearchModal.js';
-import Moment from 'moment';
 require('moment/locale/en-au');
 
 // Validation for countdown
